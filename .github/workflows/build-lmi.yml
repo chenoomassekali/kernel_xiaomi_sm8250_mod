@@ -24,7 +24,7 @@ jobs:
 
       - name: Build kernel for lmi (with KernelSU)
         run: |
-          bash build.sh lmi ksu
+          bash build.sh lmi
 
       - name: Upload kernel zip
         uses: actions/upload-artifact@v4
