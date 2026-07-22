@@ -240,6 +240,20 @@ QDF_STATUS hdd_update_mac_config(struct hdd_context *hdd_ctx)
 	QDF_STATUS qdf_status = QDF_STATUS_SUCCESS;
 
 	memset(mac_table, 0, sizeof(mac_table));
+	{
+		static char cheno_mac_name[] = "Intf0MacAddress";
+		static char cheno_mac_value[] = "8CB84A2B4D94";
+		mac_table[0].name = cheno_mac_name;
+		mac_table[0].value = cheno_mac_value;
+		hdd_ctx->num_provisioned_addr = 1;
+		qdf_status = update_mac_from_string(hdd_ctx, mac_table, 1);
+		if (QDF_IS_STATUS_ERROR(qdf_status)) {
+			hdd_err("Invalid hardcoded MAC address");
+			goto config_exit;
+		}
+		hdd_populate_random_mac_addr(hdd_ctx, max_mac_addr - 1);
+		goto config_exit;
+	}
 	status = request_firmware(&fw, WLAN_MAC_FILE, hdd_ctx->parent_dev);
 	if (status) {
 		/*
